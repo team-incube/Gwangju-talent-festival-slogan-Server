@@ -1,4 +1,4 @@
-package team.incube.gwangjutalentfestivalserver.domain.user.entity;
+package team.incube.gwangjutalentfestivalserver.domain.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,19 +15,16 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
-public class User {
+@Entity
+public class VerifyCount {
 	@Id
-	@UuidGenerator
-	@GeneratedValue
-	private UUID id;
-
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	private String phoneNumber;
 
 	@Column(nullable = false)
-	private String encodedPassword;
+	private Integer count = 0;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	public void incrementCount(){
+		count++;
+	}
 }

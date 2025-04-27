@@ -31,14 +31,9 @@ public class LoginUsecase {
 	private final RefreshTokenRepository refreshTokenRepository;
 
 	public SignInResponse execute(SignInRequest signInRequest) {
-		String email = signInRequest.getEmail();
-		User user = userRepository.findByEmail(email)
+		String phoneNumber = signInRequest.getPhoneNumber();
+		User user = userRepository.findByPhoneNumber(phoneNumber)
 				.orElseThrow(() -> new HttpException(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다."));
-
-		UUID id = user.getId();
-		if (id == null) {
-			throw new IllegalArgumentException("id cannot be null");
-		}
 
 		String rawPassword = signInRequest.getPassword();
 		String encodedPassword = user.getEncodedPassword();
@@ -47,8 +42,8 @@ public class LoginUsecase {
 			throw new HttpException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
 		}
 
-		JwtDetails accessToken = jwtProvider.generateToken(id.toString(), JwtType.ACCESS_TOKEN);
-		JwtDetails refreshToken = getRefreshTokenOrSave(id);
+		JwtDetails accessToken = jwtProvider.generateToken(user.getId().toString(), JwtType.ACCESS_TOKEN);
+		JwtDetails refreshToken = getRefreshTokenOrSave(user.getId());
 
 		return new SignInResponse(
 				accessToken.getToken(),

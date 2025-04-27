@@ -14,8 +14,8 @@ public class UserUtil {
 	private final UserRepository userRepository;
 
 	User getUser() {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		return userRepository.findByEmail(email).orElseThrow(() ->
+		String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->
 			new HttpException(HttpStatus.NOT_FOUND, "해당하는 회원을 찾을 수 없습니다.")
 		);
 	}
