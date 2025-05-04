@@ -29,22 +29,4 @@ public class HttpExceptionHandler {
 		);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
-
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<HttpExceptionResponse> methodArgumentNotValidException(
-		MethodArgumentNotValidException exception
-	) {
-		String reason = exception.getBindingResult()
-			.getFieldErrors()
-			.stream()
-			.findFirst()
-			.map(DefaultMessageSourceResolvable::getDefaultMessage)
-			.orElse("잘못된 요청입니다.");
-
-        HttpExceptionResponse response = new HttpExceptionResponse(
-			HttpStatus.BAD_REQUEST,
-			reason
-		);
-		return ResponseEntity.status(response.getStatus()).body(response);
-	}
 }

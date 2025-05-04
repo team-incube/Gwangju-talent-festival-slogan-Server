@@ -1,15 +1,13 @@
 package team.incube.gwangjutalentfestivalserver.domain.user.entity;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
-import team.incube.gwangjutalentfestivalserver.domain.user.enums.Role;
 
-import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Builder
@@ -18,16 +16,12 @@ import java.util.UUID;
 @Entity(name = "users")
 public class User {
 	@Id
-	@UuidGenerator
-	@GeneratedValue
-	private UUID id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(unique = true, nullable = false)
 	private String phoneNumber;
 
 	@Column(nullable = false)
 	private String encodedPassword;
-
-	@Enumerated(EnumType.STRING)
-	private Role role;
 }

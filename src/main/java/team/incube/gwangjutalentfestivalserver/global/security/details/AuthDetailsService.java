@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import team.incube.gwangjutalentfestivalserver.global.exception.HttpException;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class AuthDetailsService implements UserDetailsService {
@@ -18,7 +16,7 @@ public class AuthDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		UUID id = UUID.fromString(username);
+		Long id = Long.parseLong(username);
 		User userByEmail =
 			userRepository.findById(id).orElseThrow(() ->
 				new HttpException(HttpStatus.NOT_FOUND, "해당 회원을 찾을 수 없습니다.")

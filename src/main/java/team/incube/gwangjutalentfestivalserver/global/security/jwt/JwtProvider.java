@@ -2,13 +2,10 @@ package team.incube.gwangjutalentfestivalserver.global.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
-import team.incube.gwangjutalentfestivalserver.domain.auth.entity.RefreshToken;
-import team.incube.gwangjutalentfestivalserver.domain.auth.repository.RefreshTokenRepository;
 import team.incube.gwangjutalentfestivalserver.global.exception.HttpException;
 import team.incube.gwangjutalentfestivalserver.global.security.details.AuthDetailsService;
 import team.incube.gwangjutalentfestivalserver.global.security.jwt.dto.JwtDetails;
@@ -18,36 +15,26 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
-import java.util.UUID;
 
 @Component
 public class JwtProvider {
 	private final AuthDetailsService authDetailsService;
-	private final RefreshTokenRepository refreshTokenRepository;
 	private final String accessTokenKey;
-	private final String refreshTokenKey;
 	private final long accessTokenExpires;
-	@Getter
-    private final long refreshTokenExpires;
 
 	public JwtProvider(
 			AuthDetailsService authDetailsService,
-			RefreshTokenRepository refreshTokenRepository,
 			@Value("${jwt.access-token-key}") String accessTokenKey,
-			@Value("${jwt.refresh-token-key}") String refreshTokenKey,
-			@Value("${jwt.access-token-expires}") long accessTokenExpires,
-			@Value("${jwt.refresh-token-expires}") long refreshTokenExpires) {
+			@Value("${jwt.access-token-expires}") long accessTokenExpires
+	) {
 		this.authDetailsService = authDetailsService;
-		this.refreshTokenRepository = refreshTokenRepository;
 		this.accessTokenKey = accessTokenKey;
-		this.refreshTokenKey = refreshTokenKey;
 		this.accessTokenExpires = accessTokenExpires;
-		this.refreshTokenExpires = refreshTokenExpires;
 	}
 
 	public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		String resolvedToken = resolveToken(token);
-		Claims payload = getPayload(resolvedToken, JwtType.ACCESS_TOKEN);
+		Claims payload = getPayload(resolvedToken);
 
 		var userDetails = authDetailsService.loadUserByUsername(payload.getSubject());
 
@@ -62,24 +49,12 @@ public class JwtProvider {
 		}
 	}
 
-	public RefreshToken getSavedRefreshTokenByRefreshToken(String refreshToken) {
-		UUID userId = UUID.fromString(getPayload(refreshToken, JwtType.REFRESH_TOKEN).getSubject());
-		return refreshTokenRepository.findById(userId).orElseThrow(() ->
-				new HttpException(HttpStatus.NOT_FOUND, "리프레시 토큰을 찾을 수 없습니다.")
-		);
-	}
-
-	public String getIdByRefreshToken(String refreshToken) {
-		return getPayload(refreshToken, JwtType.REFRESH_TOKEN).getSubject();
-	}
-
-	public Claims getPayload(String token, JwtType jwtType) {
+	public Claims getPayload(String token) {
 		if (token == null) {
 			throw new HttpException(HttpStatus.FORBIDDEN, "토큰이 비어있습니다.");
 		}
 
-		String tokenKey = jwtType == JwtType.ACCESS_TOKEN ? accessTokenKey : refreshTokenKey;
-		byte[] keyBytes = Base64.getEncoder().encode(tokenKey.getBytes());
+		byte[] keyBytes = Base64.getEncoder().encode(accessTokenKey.getBytes());
 		var signingKey = Keys.hmacShaKeyFor(keyBytes);
 
 		try {
@@ -100,20 +75,18 @@ public class JwtProvider {
 		}
 	}
 
-	public JwtDetails generateToken(String id, JwtType jwtType) {
-		boolean isAccessToken = jwtType == JwtType.ACCESS_TOKEN;
+	public JwtDetails generateToken(Long id) {
 		LocalDateTime expiredAt = LocalDateTime.now().plus(
-				Duration.ofMillis(isAccessToken ? accessTokenExpires : refreshTokenExpires)
+				Duration.ofMillis(accessTokenExpires)
 		);
 
-		String tokenKey = jwtType == JwtType.ACCESS_TOKEN ? accessTokenKey : refreshTokenKey;
-		byte[] keyBytes = Base64.getEncoder().encode(tokenKey.getBytes());
+		byte[] keyBytes = Base64.getEncoder().encode(accessTokenKey.getBytes());
 		var signingKey = Keys.hmacShaKeyFor(keyBytes);
 
 		Date expiration = Date.from(expiredAt.atZone(ZoneId.of("Asia/Seoul")).toInstant());
 
 		String token = Jwts.builder()
-				.subject(id)
+				.subject(id.toString())
 				.signWith(signingKey)
 				.issuedAt(new Date())
 				.expiration(expiration)
