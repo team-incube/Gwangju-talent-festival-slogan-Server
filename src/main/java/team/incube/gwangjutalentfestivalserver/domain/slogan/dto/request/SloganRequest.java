@@ -28,6 +28,6 @@ public class SloganRequest {
     private Integer classNum;
 
     @NotBlank
-    private String phone;
+    private String phoneNumber;
 }
 
