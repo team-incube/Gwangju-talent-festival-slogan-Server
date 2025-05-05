@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
-public class GoogleSheetsService {
+public class GoogleSheetsAdapter {
 
     @Value("${google.sheet.id}")
     private String spreadsheetId;
