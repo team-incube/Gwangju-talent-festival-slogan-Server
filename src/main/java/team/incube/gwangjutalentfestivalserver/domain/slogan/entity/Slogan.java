@@ -31,6 +31,6 @@ public class Slogan {
     private Integer classNum;
 
     @Column(nullable = false)
-    private String phone;
+    private String phoneNumber;
 }
 
