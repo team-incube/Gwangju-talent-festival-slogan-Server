@@ -3,18 +3,20 @@ package team.incube.gwangjutalentfestivalserver.domain.slogan.service;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.dto.request.SloganRequest;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.entity.Slogan;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.repository.SloganRepository;
-import team.incube.gwangjutalentfestivalserver.global.thirdparty.google.adapter.GoogleSheetsService;
+import team.incube.gwangjutalentfestivalserver.global.thirdparty.google.adapter.GoogleSheetsAdapter;
 
 @Service
 @RequiredArgsConstructor
 public class SloganService {
 
     private final SloganRepository sloganRepository;
-    private final GoogleSheetsService googleSheetsService;
+    private final GoogleSheetsAdapter googleSheetsAdapter;
 
+    @Transactional
     public void submit(SloganRequest request) {
         // DB 저장
         Slogan slogan = Slogan.builder()
@@ -23,12 +25,12 @@ public class SloganService {
                 .school(request.getSchool())
                 .grade(request.getGrade())
                 .classNum(request.getClassNum())
-                .phone(request.getPhone())
+                .phoneNumber(request.getPhoneNumber())
                 .build();
 
         sloganRepository.save(slogan);
 
         // Google Sheets 반영
-        googleSheetsService.appendSlogan(request);
+        googleSheetsAdapter.appendSlogan(request);
     }
 }
