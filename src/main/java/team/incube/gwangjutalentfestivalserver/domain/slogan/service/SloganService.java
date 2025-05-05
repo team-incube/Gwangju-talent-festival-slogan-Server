@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.dto.request.SloganRequest;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.entity.Slogan;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.repository.SloganRepository;
+import team.incube.gwangjutalentfestivalserver.global.thirdparty.google.adapter.GoogleSheetsService;
 
 @Service
 @RequiredArgsConstructor
