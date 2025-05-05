@@ -9,12 +9,12 @@ import team.incube.gwangjutalentfestivalserver.domain.slogan.service.SloganServi
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/slogan")
+@RequestMapping("/slogan")
 public class SloganController {
 
     private final SloganService sloganService;
 
-    @PostMapping("/submit")
+    @PostMapping
     public ResponseEntity<Void> submit(@Valid @RequestBody SloganRequest request) {
         sloganService.submit(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
