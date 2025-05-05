@@ -1,5 +1,4 @@
-package team.incube.gwangjutalentfestivalserver.domain.slogan.service;
-
+package team.incube.gwangjutalentfestivalserver.global.thirdparty.google.adapter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.api.services.sheets.v4.model.ValueRange;
-
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
