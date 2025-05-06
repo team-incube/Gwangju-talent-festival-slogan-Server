@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SloganRequest {
+public class AppendSloganRequest {
 
     @NotBlank
     private String slogan;
