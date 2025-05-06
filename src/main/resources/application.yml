@@ -24,3 +24,9 @@ spring:
 jwt:
   access-token-key: ${ACCESS_TOKEN_KEY}
   access-token-expires: 1800000
+
+google:
+  account-credential: ${GOOGLE_ACCOUNT_CREDENTIAL}
+  sheets:
+    id: ${GOOGLE_SHEETS_ID}
+    page: ${GOOGLE_SHEETS_PAGE}

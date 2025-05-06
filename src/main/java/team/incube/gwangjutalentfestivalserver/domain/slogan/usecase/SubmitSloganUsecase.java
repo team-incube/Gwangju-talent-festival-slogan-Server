@@ -4,19 +4,19 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.incube.gwangjutalentfestivalserver.domain.slogan.dto.request.AppendSloganRequest;
+import team.incube.gwangjutalentfestivalserver.domain.slogan.dto.request.SubmitSloganRequest;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.entity.Slogan;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.repository.SloganRepository;
 import team.incube.gwangjutalentfestivalserver.global.thirdparty.google.adapter.GoogleSheetsAdapter;
 
 @Service
 @RequiredArgsConstructor
-public class AppendSloganUsecase {
+public class SubmitSloganUsecase {
     private final SloganRepository sloganRepository;
     private final GoogleSheetsAdapter googleSheetsAdapter;
 
     @Transactional
-    public void execute(AppendSloganRequest request) {
+    public void execute(SubmitSloganRequest request) {
         // DB 저장
         Slogan slogan = Slogan.builder()
                 .slogan(request.getSlogan())
