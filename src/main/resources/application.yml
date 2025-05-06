@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gwangju-talent-festival-server
+    name: gwangju-talent-festival-slogan-server
 
   jackson:
     serialization:
