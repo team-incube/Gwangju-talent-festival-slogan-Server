@@ -30,3 +30,10 @@ google:
   sheets:
     id: ${GOOGLE_SHEETS_ID}
     page: ${GOOGLE_SHEETS_PAGE}
+
+cors:
+  allowed-origins:
+    - "http://localhost:3000"
+    - "https://광탈페.kr"
+    - "https://xn--hc0b809dz3b.kr"
+
