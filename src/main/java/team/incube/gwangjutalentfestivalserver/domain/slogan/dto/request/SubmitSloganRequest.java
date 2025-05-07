@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SubmitSloganRequest {
-
     @NotBlank
     private String slogan;
 
@@ -22,12 +21,13 @@ public class SubmitSloganRequest {
     private String school;
 
     @NotNull
+    @Size(min = 1, max = 6)
     private Integer grade;
 
     @NotNull
     private Integer classNum;
 
-    @NotBlank
+    @Pattern(regexp = "^010\\d{8}$")
     private String phoneNumber;
 }
 
