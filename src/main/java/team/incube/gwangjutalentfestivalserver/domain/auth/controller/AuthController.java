@@ -12,14 +12,14 @@ import team.incube.gwangjutalentfestivalserver.domain.auth.usecase.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-	private final AdminLoginUsecase adminLoginUsecase;
+	private final LoginAdminUsecase loginAdminUsecase;
 
 	@PostMapping("/login")
 	public ResponseEntity<AdminLoginResponse> login(
 		@Valid @RequestBody AdminLoginRequest adminLoginRequest
 	) {
 		return ResponseEntity.ok(
-			adminLoginUsecase.execute(adminLoginRequest)
+			loginAdminUsecase.execute(adminLoginRequest)
 		);
 	}
 }
