@@ -20,6 +20,9 @@ public class SubmitSloganRequest {
     @NotBlank
     private String school;
 
+    @NotBlank
+    private String name;
+
     @NotNull
     @Size(min = 1, max = 6)
     private Integer grade;
