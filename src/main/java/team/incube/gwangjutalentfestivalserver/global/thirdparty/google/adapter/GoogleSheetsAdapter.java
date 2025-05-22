@@ -12,6 +12,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import team.incube.gwangjutalentfestivalserver.domain.slogan.enums.SheetType;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -19,24 +20,35 @@ import java.util.List;
 
 @Service
 public class GoogleSheetsAdapter {
-    private final String spreadsheetId;
-    private final String spreadsheetPage;
+    private final String privateSheetId;
+    private final String privateSheetPage;
+    private final String publicSheetId;
+    private final String publicSheetPage;
     private final String accountCredential;
 
     public GoogleSheetsAdapter(
-        @Value("${google.sheets.id}")
-        String spreadsheetId,
-        @Value("${google.sheets.page}")
-        String spreadsheetPage,
+        @Value("${google.sheets.private-sheet-id}")
+        String privateSheetId,
+        @Value("${google.sheets.private-sheet-page}")
+        String privateSheetPage,
+        @Value("${google.sheets.public-sheet-id}")
+        String publicSheetId,
+        @Value("${google.sheets.public-sheet-page}")
+        String publicSheetPage,
         @Value("${google.account-credential}")
         String accountCredential
     ){
-        this.spreadsheetId = spreadsheetId;
-        this.spreadsheetPage = spreadsheetPage;
+        this.privateSheetId = privateSheetId;
+        this.privateSheetPage = privateSheetPage;
+        this.publicSheetId = publicSheetId;
+        this.publicSheetPage = publicSheetPage;
         this.accountCredential = accountCredential;
     }
 
-    public void appendSlogan(SubmitSloganRequest request) {
+    public void appendSlogan(SubmitSloganRequest request, SheetType sheetType) {
+        String sheetId = sheetType == SheetType.PUBLIC ? publicSheetId : privateSheetId;
+        String sheetPage = sheetType == SheetType.PUBLIC ? publicSheetPage : privateSheetPage;
+
         try {
             HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
             JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
@@ -49,25 +61,35 @@ public class GoogleSheetsAdapter {
                     .setApplicationName("Slogan Submission")
                     .build();
 
-            List<List<Object>> sloganAsListRange = List.of(
-                List.of(
-                    request.getSchool(),
-                    String.valueOf(request.getGrade()),
-                    String.valueOf(request.getClassNum()),
-                    request.getPhoneNumber(),
-                    request.getSlogan(),
-                    request.getDescription()
-                )
+            ValueRange valueRange = new ValueRange().setValues(
+                getLists(request, sheetType)
             );
-            ValueRange valueRange = new ValueRange().setValues(sloganAsListRange);
 
             sheetsService.spreadsheets().values()
-                .append(spreadsheetId, spreadsheetPage, valueRange)
+                .append(sheetId, sheetPage, valueRange)
                 .setValueInputOption("RAW")
                 .setInsertDataOption("INSERT_ROWS")
                 .execute();
         } catch (Exception e) {
             throw new RuntimeException("Google Sheets 연동 실패: " + e.getMessage(), e);
         }
+    }
+
+    private static List<List<Object>> getLists(SubmitSloganRequest request, SheetType sheetType) {
+        List<Object> sloganAsList = sheetType == SheetType.PUBLIC ?
+            List.of(
+                request.getSlogan(),
+                request.getDescription()
+            ) :
+            List.of(
+                request.getSchool(),
+                String.valueOf(request.getGrade()),
+                String.valueOf(request.getClassroom()),
+                request.getPhoneNumber(),
+                request.getSlogan(),
+                request.getDescription()
+            );
+
+        return List.of(sloganAsList);
     }
 }

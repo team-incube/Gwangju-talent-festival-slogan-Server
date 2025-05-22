@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SubmitSloganRequest {
     @NotBlank
     private String slogan;
@@ -28,7 +28,7 @@ public class SubmitSloganRequest {
     private Integer grade;
 
     @NotNull
-    private Integer classNum;
+    private Integer classroom;
 
     @Pattern(regexp = "^010\\d{8}$")
     private String phoneNumber;

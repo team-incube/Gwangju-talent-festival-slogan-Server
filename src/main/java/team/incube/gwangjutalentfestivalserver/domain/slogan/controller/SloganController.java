@@ -11,7 +11,6 @@ import team.incube.gwangjutalentfestivalserver.domain.slogan.usecase.SubmitSloga
 @RequiredArgsConstructor
 @RequestMapping("/slogan")
 public class SloganController {
-
     private final SubmitSloganUsecase submitSloganUsecase;
 
     @PostMapping

@@ -28,8 +28,10 @@ jwt:
 google:
   account-credential: ${GOOGLE_ACCOUNT_CREDENTIAL}
   sheets:
-    id: ${GOOGLE_SHEETS_ID}
-    page: ${GOOGLE_SHEETS_PAGE}
+    private-sheet-id: ${GOOGLE_PRIVATE_SHEET_ID}
+    private-sheet-page: ${GOOGLE_PRIVATE_SHEET_PAGE}
+    public-sheet-id: ${GOOGLE_PUBLIC_SHEET_ID}
+    public-sheet-page: ${GOOGLE_PUBLIC_SHEET_PAGE}
 
 cors:
   allowed-origins:

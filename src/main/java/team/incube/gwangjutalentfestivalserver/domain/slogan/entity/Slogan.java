@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Slogan {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,8 +26,11 @@ public class Slogan {
     @Column(nullable = false)
     private Integer grade;
 
-    @Column(name = "class_num", nullable = false)
-    private Integer classNum;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer classroom;
 
     @Column(nullable = false)
     private String phoneNumber;
