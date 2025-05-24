@@ -45,7 +45,7 @@ public class GoogleSheetsAdapter {
         this.accountCredential = accountCredential;
     }
 
-    public void appendSlogan(SubmitSloganRequest request, SheetType sheetType) {
+    public void appendSlogan(SubmitSloganRequest request, Long id, SheetType sheetType) {
         String sheetId = sheetType == SheetType.PUBLIC ? publicSheetId : privateSheetId;
         String sheetPage = sheetType == SheetType.PUBLIC ? publicSheetPage : privateSheetPage;
 
@@ -62,7 +62,7 @@ public class GoogleSheetsAdapter {
                     .build();
 
             ValueRange valueRange = new ValueRange().setValues(
-                getLists(request, sheetType)
+                getLists(request, id, sheetType)
             );
 
             sheetsService.spreadsheets().values()
@@ -75,16 +75,19 @@ public class GoogleSheetsAdapter {
         }
     }
 
-    private static List<List<Object>> getLists(SubmitSloganRequest request, SheetType sheetType) {
+    private static List<List<Object>> getLists(SubmitSloganRequest request, Long id, SheetType sheetType) {
         List<Object> sloganAsList = sheetType == SheetType.PUBLIC ?
             List.of(
+                id,
                 request.getSlogan(),
                 request.getDescription()
             ) :
             List.of(
+                id,
                 request.getSchool(),
                 String.valueOf(request.getGrade()),
                 String.valueOf(request.getClassroom()),
+                request.getName(),
                 request.getPhoneNumber(),
                 request.getSlogan(),
                 request.getDescription()
