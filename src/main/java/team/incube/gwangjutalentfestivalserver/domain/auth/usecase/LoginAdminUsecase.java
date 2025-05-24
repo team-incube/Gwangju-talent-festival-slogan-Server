@@ -16,7 +16,7 @@ import team.incube.gwangjutalentfestivalserver.global.security.jwt.dto.JwtDetail
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AdminLoginUsecase {
+public class LoginAdminUsecase {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtProvider jwtProvider;

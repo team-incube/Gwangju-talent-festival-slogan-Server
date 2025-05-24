@@ -2,6 +2,7 @@ package team.incube.gwangjutalentfestivalserver.global.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import team.incube.gwangjutalentfestivalserver.global.properties.CorsProperties;
 import team.incube.gwangjutalentfestivalserver.global.security.filter.JwtFilter;
 import team.incube.gwangjutalentfestivalserver.global.security.jwt.JwtProvider;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +15,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final JwtProvider jwtProvider;
+	private final CorsProperties corsProperties;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,9 +48,9 @@ public class SecurityConfig {
 		CorsConfiguration corsConfigurationSource = new CorsConfiguration();
 		corsConfigurationSource.addAllowedHeader("*");
 		corsConfigurationSource.addAllowedMethod("*");
-		corsConfigurationSource.addAllowedOriginPattern("*");
-		corsConfigurationSource.setAllowCredentials(true);
 		corsConfigurationSource.addExposedHeader("Authorization");
+		corsConfigurationSource.setAllowedOrigins(corsProperties.getAllowedOrigins());
+		corsConfigurationSource.setAllowCredentials(true);
 
 		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
 

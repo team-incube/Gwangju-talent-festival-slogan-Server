@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gwangju-talent-festival-server
+    name: gwangju-talent-festival-slogan-server
 
   jackson:
     serialization:
@@ -24,3 +24,18 @@ spring:
 jwt:
   access-token-key: ${ACCESS_TOKEN_KEY}
   access-token-expires: 1800000
+
+google:
+  account-credential: ${GOOGLE_ACCOUNT_CREDENTIAL}
+  sheets:
+    private-sheet-id: ${GOOGLE_PRIVATE_SHEET_ID}
+    private-sheet-page: ${GOOGLE_PRIVATE_SHEET_PAGE}
+    public-sheet-id: ${GOOGLE_PUBLIC_SHEET_ID}
+    public-sheet-page: ${GOOGLE_PUBLIC_SHEET_PAGE}
+
+cors:
+  allowed-origins:
+    - "http://localhost:3000"
+    - "https://광탈페.kr"
+    - "https://xn--hc0b809dz3b.kr"
+
