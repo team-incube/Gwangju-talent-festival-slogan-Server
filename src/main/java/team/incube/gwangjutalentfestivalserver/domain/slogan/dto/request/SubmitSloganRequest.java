@@ -23,8 +23,9 @@ public class SubmitSloganRequest {
     @NotBlank
     private String name;
 
+    @Min(1)
+    @Max(5)
     @NotNull
-    @Size(min = 1, max = 6)
     private Integer grade;
 
     @NotNull
