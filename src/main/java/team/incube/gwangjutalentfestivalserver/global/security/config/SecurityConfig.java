@@ -39,22 +39,7 @@ public class SecurityConfig {
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.sessionManagement (it ->
 				it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			).cors(it -> it.configurationSource(corsConfig()))
-			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+			).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 			.build();
-	}
-
-	CorsConfigurationSource corsConfig() {
-		CorsConfiguration corsConfigurationSource = new CorsConfiguration();
-		corsConfigurationSource.addAllowedHeader("*");
-		corsConfigurationSource.addAllowedMethod("*");
-		corsConfigurationSource.addExposedHeader("Authorization");
-		corsConfigurationSource.setAllowedOrigins(corsProperties.getAllowedOrigins());
-		corsConfigurationSource.setAllowCredentials(true);
-
-		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-
-		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfigurationSource);
-		return urlBasedCorsConfigurationSource;
 	}
 }
