@@ -29,7 +29,6 @@ public class SubmitSloganUsecase {
             .build();
         sloganRepository.save(slogan);
 
-        googleSheetsAdapter.appendSlogan(request, slogan.getId(), SheetType.PUBLIC);
         googleSheetsAdapter.appendSlogan(request, slogan.getId(), SheetType.PRIVATE);
     }
 }
