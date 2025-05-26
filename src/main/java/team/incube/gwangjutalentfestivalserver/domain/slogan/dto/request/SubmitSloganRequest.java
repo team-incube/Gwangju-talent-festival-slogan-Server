@@ -24,11 +24,12 @@ public class SubmitSloganRequest {
     private String name;
 
     @Min(1)
-    @Max(5)
+    @Max(6)
     @NotNull
     private Integer grade;
 
     @NotNull
+    @Positive
     private Integer classroom;
 
     @Pattern(regexp = "^010\\d{8}$")
