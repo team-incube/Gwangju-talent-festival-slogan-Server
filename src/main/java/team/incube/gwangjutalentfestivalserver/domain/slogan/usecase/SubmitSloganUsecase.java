@@ -8,14 +8,14 @@ import team.incube.gwangjutalentfestivalserver.domain.slogan.dto.request.SubmitS
 import team.incube.gwangjutalentfestivalserver.domain.slogan.entity.Slogan;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.enums.SheetType;
 import team.incube.gwangjutalentfestivalserver.domain.slogan.repository.SloganRepository;
-import team.incube.gwangjutalentfestivalserver.global.thirdparty.google.adapter.GoogleSheetsAdapter;
+import team.incube.gwangjutalentfestivalserver.global.outbox.usecase.EnqueueSloganSheetOutboxUsecase;
 
 @Service
 @RequiredArgsConstructor
 public class SubmitSloganUsecase {
-    private final SloganRepository sloganRepository;
-    private final GoogleSheetsAdapter googleSheetsAdapter;
 
+    private final SloganRepository sloganRepository;
+    private final EnqueueSloganSheetOutboxUsecase enqueueSloganSheetOutboxUsecase;
     @Transactional
     public void execute(SubmitSloganRequest request) {
         Slogan slogan = Slogan.builder()
@@ -29,6 +29,10 @@ public class SubmitSloganUsecase {
             .build();
         sloganRepository.save(slogan);
 
-        googleSheetsAdapter.appendSlogan(request, slogan.getId(), SheetType.PRIVATE);
+        enqueueSloganSheetOutboxUsecase.execute(
+                request,
+                slogan.getId(),
+                SheetType.PRIVATE
+        );
     }
 }
